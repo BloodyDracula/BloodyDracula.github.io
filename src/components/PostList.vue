@@ -3,7 +3,7 @@
       <h3>Список пользователей</h3>
       <post-item
        v-for="post in posts"
-       :post:="post"
+       :post="post"
        />
     </div>
     </template>
@@ -22,9 +22,5 @@
     </script>
     
     <style scoped>
-    .post {
-  padding: 15px;
-  border: 1px solid teal;
-  margin-top: 15px;
-}
+
     </style>
