@@ -21,10 +21,11 @@
     </form>
 </template>
 
-<script> 
+<script>
+import MyInput from "./UI/MyInput.vue";
 import MyButton from "./UI/MyButton.vue";
 export default {
-  components: {MyButton},
+  components: {MyButton,MyInput},
   data() {
           return {
             post: {
