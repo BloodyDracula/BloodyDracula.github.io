@@ -1,12 +1,30 @@
 <template>
 <div class="app">
-    <post-from
-    @create="createPost"
+  <h1>Страница с постами</h1>
+  <div class="app__btns">
+    <my-button
+        @click="showDialog"
+    >
+      Создать пост
+    </my-button>
+    <my-select
+      v-model="selectedSort"
     />
+  </div>
+  <my-dialog v-model:show="dialogVisible">
+    <post-from
+        @create="createPost"
+    />
+  </my-dialog>
+
     <post-list 
     :posts="posts"
     @remove="removePost"
+    v-if="!isPostsLoading"
     />
+  <div v-else>
+    Идёт загрузка...
+  </div>
     
 </div>
 </template>
@@ -14,28 +32,51 @@
 <script>
 import PostFrom from "./components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
+import MyDialog from "./components/UI/MyDialog.vue";
+import MyButton from "./components/UI/MyButton.vue";
+import axios from "axios";
+import MySelect from "./components/UI/MySelect.vue";
 
 export default {
   components: {
+    MySelect,
+    MyButton,
+    MyDialog,
     PostList,PostFrom
   },
   data() {
         return {
-            posts: [
-              {id: 1, title: 'Javascript', body: 'Описание поста'},
-              {id: 2, title: 'Javascript 2', body: 'Описание поста 2'},
-              {id: 3, title: 'Javascript 3', body: 'Описание поста 3'},
-            ],
-
+            posts: [],
+          dialogVisible: false,
+          isPostsLoading: false,
+          selectedSort: ''
         }
     },
     methods: {
         createPost(post) {
           this.posts.push(post);
+          this.dialogVisible = false;
         },
         removePost(post) {
-          this.post = this.posts.filter(p => p.id !== post.id)
+          this.posts = this.posts.filter(p => p.id !== post.id)
+        },
+      showDialog() {
+          this.dialogVisible = true;
+      },
+      async fetchPosts () {
+        try {
+          this.isPostsLoading = true;
+            const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+            this.posts = response.data;
+        } catch (e) {
+          alert('Ошибка')
+        } finally {
+          this.isPostsLoading = false;
         }
+      }
+    },
+    mounted() {
+    this.fetchPosts();
     }
 }
 </script>
@@ -50,5 +91,10 @@ export default {
   padding: 20px;
 }
 
+.app__btns {
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
+}
 
 </style>
