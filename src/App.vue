@@ -111,23 +111,24 @@ export default {
         } finally {
           this.isPostsLoading = false;
         }
-      }
-    },
-  async loadMorePosts () {
-    try {
-      this.page += 1;
-      const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-        params: {
-          _page: this.page,
-          _limit: this.limit
+      },
+      async loadMorePosts () {
+        try {
+          this.page += 1;
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+            params: {
+              _page: this.page,
+              _limit: this.limit
+            }
+          });
+          this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
+          this.posts = [...this.posts, ...response.data];
+        } catch (e) {
+          alert('Ошибка')
         }
-      });
-      this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
-      this.posts = [...this.posts, ...response.data];
-    } catch (e) {
-      alert('Ошибка')
-    }
-  },
+      },
+    },
+
     mounted() {
     this.fetchPosts();
       console.log(this.$refs.observer);
@@ -136,7 +137,7 @@ export default {
         threshold: 1.0
       }
       const callback = (entries, observer) => {
-        if(entries[0].isIntersecting) {
+        if(entries[0].isIntersecting && this.page < this.totalPages) {
           this.loadMorePosts()
         }
       };
