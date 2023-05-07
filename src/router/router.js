@@ -23,7 +23,7 @@ const routes = [
         component: PostIdPage
     },
     {
-        path: './store',
+        path: '/store',
         component: PostPageWithStore
     }
 ]
