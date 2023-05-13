@@ -1,5 +1,5 @@
 <template>
-    <div v-if="posts.length > 0">
+    <div v-if="posts?.length > 0">
       <h3>Список постов</h3>
       <transition-group name="user-list">
         <post-item

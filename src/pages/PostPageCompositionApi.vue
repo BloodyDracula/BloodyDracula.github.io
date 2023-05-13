@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>{{ likes }}</h1>
-    <button @click="addLike">add Like</button>
     <h1>Страница с постами</h1>
     <my-input
         v-model="searchQuery"
@@ -65,9 +63,9 @@ export default {
     }
   },
   setup(props){
-    const {posts, totalPages, isPostsLoading} = usePosts(10)
+    const {posts, totalPages, isPostsLoading} = usePosts(10);
     const {SortedPosts, selectedSort} = useSortedPosts(posts);
-    const {searchQuery, SortedAndSearchedPosts} = useSortedAndSearchedPosts()
+    const {searchQuery, sortedAndSearchedPosts} = useSortedAndSearchedPosts(SortedPosts)
     return {
       posts,
       totalPages,
@@ -75,7 +73,7 @@ export default {
       SortedPosts,
       selectedSort,
       searchQuery,
-      SortedAndSearchedPosts
+      sortedAndSearchedPosts
     }
   }
 }
